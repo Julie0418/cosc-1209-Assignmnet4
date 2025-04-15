@@ -16,7 +16,7 @@ Parameters:
   GitHubRepo:
     Description: "GitHub repository name"
     Type: String
-    Default: khatoon-final
+    Default: cosc-1209-Assignmnet4
 
   GitHubBranch:
     Description: "Branch for CodePipeline"
