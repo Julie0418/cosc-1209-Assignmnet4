@@ -223,11 +223,7 @@ Resources:
           FromPort: 3000 # Updated to match the application port
           ToPort: 3000
           SourceSecurityGroupId: !Ref ALBSecurityGroup
-      SecurityGroupEgress:
-        - IpProtocol: tcp
-          FromPort: 443
-          ToPort: 443
-          CidrIp: 0.0.0.0/0
+      
 
   ECSTaskExecutionRole:
     Type: AWS::IAM::Role
@@ -257,6 +253,7 @@ Resources:
           Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ECRRepositoryName}:latest
           PortMappings:
             - ContainerPort: 3000 # Updated to match the Dockerfile and index.js
+              Protocol: tcp
           Essential: true
 
   ECSService:
