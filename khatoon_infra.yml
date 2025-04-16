@@ -191,7 +191,7 @@ Resources:
     Type: AWS::ElasticLoadBalancingV2::TargetGroup
     Properties:
       VpcId: !Ref VPC
-      Port: 80
+      Port: 3000 # Updated to match the application port
       Protocol: HTTP
       HealthCheckProtocol: HTTP
       HealthCheckPath: /
@@ -220,8 +220,8 @@ Resources:
       VpcId: !Ref VPC
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 80
-          ToPort: 80
+          FromPort: 3000 # Updated to match the application port
+          ToPort: 3000
           SourceSecurityGroupId: !Ref ALBSecurityGroup
       SecurityGroupEgress:
         - IpProtocol: tcp
@@ -256,7 +256,7 @@ Resources:
         - Name: khatoon-app
           Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ECRRepositoryName}:latest
           PortMappings:
-            - ContainerPort: 80
+            - ContainerPort: 3000 # Updated to match the Dockerfile and index.js
           Essential: true
 
   ECSService:
@@ -278,7 +278,7 @@ Resources:
       LoadBalancers:
         - TargetGroupArn: !Ref ALBTargetGroup
           ContainerName: khatoon-app
-          ContainerPort: 80
+          ContainerPort: 3000 # Updated to match the Dockerfile and index.js
 
 Outputs:
   ALBEndpoint:
