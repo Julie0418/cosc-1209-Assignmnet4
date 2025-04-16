@@ -8,6 +8,11 @@ Parameters:
     Type: String
     Default: devops-ecr
 
+  ImageTag:
+    Description: Tag of the Docker image in ECR (e.g., Git commit hash)
+    Type: String
+    Default: latest # Default to 'latest' if no tag is provided
+
   GitHubOwner:
     Description: "GitHub repository owner"
     Type: String
@@ -250,9 +255,9 @@ Resources:
       ExecutionRoleArn: !GetAtt ECSTaskExecutionRole.Arn
       ContainerDefinitions:
         - Name: khatoon-app
-          Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ECRRepositoryName}:latest
+          Image: !Sub ${AWS::AccountId}.dkr.ecr.${AWS::Region}.amazonaws.com/${ECRRepositoryName}:${ImageTag} # Use the ImageTag parameter
           PortMappings:
-            - ContainerPort: 3000 # Updated to match the Dockerfile and index.js
+            - ContainerPort: 3000
               Protocol: tcp
           Essential: true
 
@@ -275,7 +280,7 @@ Resources:
       LoadBalancers:
         - TargetGroupArn: !Ref ALBTargetGroup
           ContainerName: khatoon-app
-          ContainerPort: 3000 # Updated to match the Dockerfile and index.js
+          ContainerPort: 3000
 
 Outputs:
   ALBEndpoint:
